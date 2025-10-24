@@ -48,6 +48,28 @@
         .logout:hover {
             background-color: #e0e7ff;
         }
+        
+        /* --- Estilos Adicionados --- */
+        .button-container {
+            margin-top: 30px; /* Espaço acima dos botões */
+        }
+        .action-button {
+            background-color: #2563eb; /* Cor principal */
+            color: white;
+            padding: 12px 25px; /* Tamanho do botão */
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0 10px; /* Espaço entre os botões */
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        .action-button:hover {
+            background-color: #1d4ed8; /* Cor mais escura no hover */
+        }
+        /* --- Fim dos Estilos Adicionados --- */
+
     </style>
 </head>
 <body>
@@ -61,6 +83,11 @@
     <main>
         <h2>Bem-vindo à sua área de aluno!</h2>
         <p>Aqui você poderá consultar livros, verificar empréstimos e muito mais.</p>
-    </main>
+
+        <div class="button-container">
+    <a href="{% url 'lista_livros' %}" class="action-button">Livros Disponíveis</a>
+    <a href="{% url 'meus_emprestimos' %}" class="action-button">Meus Empréstimos</a>
+     </div>
+        </main>
 </body>
 </html>

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'contas',
     'bibliotecarias',
     'alunos',
+    'emprestimos',
 ]
 
 MIDDLEWARE = [

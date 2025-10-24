@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Meus Empréstimos</title>
+<style>
+    body { font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 20px; }
+    h2 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th { background-color: #f2f2f2; }
+    a.button { background-color: #f44336; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px; }
+    a.button.disabled { background-color: #999; pointer-events: none; }
+</style>
+</head>
+<body>
+    {% if messages %}
+    <ul style="list-style: none; padding: 0; margin: 10px 0;">
+        {% for message in messages %}
+            <li style="padding: 10px; margin-bottom: 5px; border-radius: 5px; 
+                       {% if message.tags == 'success' %}background-color: #4CAF50; color: white;{% endif %}
+                       {% if message.tags == 'error' %}background-color: #f44336; color: white;{% endif %}">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+<h2>Meus Empréstimos</h2>
+<table>
+    <tr>
+        <th>Livro</th>
+        <th>Data de Empréstimo</th>
+        <th>Devolvido?</th>
+        <th>Ações</th>
+    </tr>
+    {% for emp in emprestimos %}
+    <tr>
+        <td>{{ emp.livro.titulo }}</td>
+        <td>{{ emp.data_emprestimo }}</td>
+        <td>{% if emp.devolvido %}Sim{% else %}Não{% endif %}</td>
+        <td>
+            {% if not emp.devolvido %}
+            <a href="{% url 'devolver_livro' emp.id %}" class="button">Devolver</a>
+            {% else %}
+            <a class="button disabled">Devolvido</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
