@@ -49,3 +49,5 @@ A Biblioteca Digital é uma plataforma onde você pode:
 - Variáveis CSS para fácil customização do tema
 
 ---
+
+Versão anterior: https://github.com/GustavoHcode/Biblioteca-BookKeeper
