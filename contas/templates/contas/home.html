@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca Digital</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 10%;
+            background-color: #f7f7f7;
+        }
+        h1 { color: #333; }
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #3b82f6;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+        a:hover { background-color: #2563eb; }
+    </style>
+</head>
+<body>
+    <h1>Bem-vindo à Biblioteca Digital</h1>
+    <p>Faça login caso já tenha uma conta ou cadastre-se</p>
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'cadastro' %}">Cadastrar-se</a>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca Digital - Aluno</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+        }
+        header {
+            background-color: #2563eb;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            text-align: center;
+            margin-top: 10%;
+        }
+        main h2 {
+            color: #333;
+        }
+        .logout {
+            background-color: white;
+            color: #2563eb;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .logout:hover {
+            background-color: #e0e7ff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Biblioteca Digital</h1>
+        <nav>
+            <span>Olá, <strong>{{ user.nome }}</strong></span>
+            <a class="logout" href="{% url 'logout' %}">Sair</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Bem-vindo à sua área de aluno!</h2>
+        <p>Aqui você poderá consultar livros, verificar empréstimos e muito mais.</p>
+    </main>
+</body>
+</html>

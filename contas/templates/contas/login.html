@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Biblioteca Digital</title>
+</head>
+<body>
+    <h1>Login</h1>
+    {% if messages %}
+    <ul style="list-style: none; padding: 0;">
+        {% for message in messages %}
+            <li style="
+                background-color: #d1fae5;
+                color: #065f46;
+                border: 1px solid #10b981;
+                padding: 10px;
+                border-radius: 5px;
+                margin-bottom: 10px;
+                font-weight: bold;">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+ {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Entrar</button>
+    </form>
+    <a href="{% url 'cadastro' %}">Não tem uma conta? Cadastre-se</a>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Livro</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; }
+        main { padding: 40px; }
+        form {
+            background-color: white; padding: 20px; border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); max-width: 500px; margin: auto;
+        }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input[type=text], input[type=number] {
+            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;
+        }
+        button {
+            background-color: #2563eb; color: white; padding: 10px 15px;
+            border: none; border-radius: 5px; margin-top: 20px;
+        }
+        a { text-decoration: none; color: #2563eb; }
+    </style>
+</head>
+<body>
+<main>
+    <h2>Cadastrar Novo Livro</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required>
+
+        <label for="autor">Autor:</label>
+        <input type="text" id="autor" name="autor" required>
+        
+        <label for="isbn">ISBN:</label>
+        <input type="text" id="isbn" name="isbn" pattern="\d{13}" maxlength="13" minlength="13"
+         title="O ISBN deve conter exatamente 13 dígitos numéricos" required>
+
+
+
+        <label for="categoria">Categoria:</label>
+        <input type="text" id="categoria" name="categoria" required>
+
+        <label for="ano_publicacao">Ano de Publicação:</label>
+        <input type="number" id="ano_publicacao" name="ano_publicacao" required>
+
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" id="quantidade" name="quantidade" min="1" required>
+
+        <label><input type="checkbox" name="disponivel" checked> Disponível</label>
+
+        <button type="submit">Salvar</button>
+    </form>
+    <p><a href="{% url 'home_bibliotecaria' %}">← Voltar</a></p>
+</main>
+</body>
+</html>

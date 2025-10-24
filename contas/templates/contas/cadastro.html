@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro - Biblioteca Digital</title>
+</head>
+<body>
+    <h1>Cadastro de Usuário</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Cadastrar</button>
+    </form>
+    <a href="{% url 'login' %}">Já tem uma conta? Faça login</a>
+</body>
+</html>

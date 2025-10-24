@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciamento de Livros - Bibliotecária</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; }
+        header {
+            background-color: #2563eb; color: white;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px;
+        }
+        h1 { font-size: 22px; margin: 0; }
+        a { text-decoration: none; }
+        .logout {
+            background-color: white; color: #2563eb;
+            padding: 8px 15px; border-radius: 8px; font-weight: bold;
+        }
+        .logout:hover { background-color: #e0e7ff; }
+        main { padding: 40px; }
+        .botao {
+            background-color: #2563eb; color: white;
+            padding: 10px 20px; border-radius: 8px; font-weight: bold;
+        }
+        table {
+            width: 100%; border-collapse: collapse; background-color: white;
+            border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        th, td { padding: 12px 15px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background-color: #2563eb; color: white; }
+        tr:hover { background-color: #f1f5f9; }
+        .acoes a { margin-right: 10px; color: #2563eb; font-weight: bold; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>📚 Biblioteca Digital - Painel da Bibliotecária</h1>
+    <nav>
+        <a class="logout" href="{% url 'logout' %}">Sair</a>
+    </nav>
+</header>
+
+<main>
+    {% if messages %}
+        {% for message in messages %}
+            <p style="background-color:#d1fae5;color:#065f46;padding:10px;border-radius:8px;font-weight:bold;">
+                {{ message }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    <a class="botao" href="{% url 'cadastrar_livro' %}">+ Novo Livro</a>
+
+    {% if livros %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>ISBN</th>
+                    <th>Categoria</th>
+                    <th>Ano</th>
+                    <th>Qtd.</th>
+                    <th>Disponível</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for livro in livros %}
+                <tr>
+                    <td>{{ livro.titulo }}</td>
+                    <td>{{ livro.autor }}</td>
+                    <td>{{ livro.isbn }}</td>
+                    <td>{{ livro.categoria }}</td>
+                    <td>{{ livro.ano_publicacao }}</td>
+                    <td>{{ livro.quantidade }}</td>
+                    <td>{% if livro.disponivel %}✅{% else %}❌{% endif %}</td>
+                    <td class="acoes">
+                        <a href="{% url 'editar_livro' livro.id %}">Editar</a> |
+                        <a href="{% url 'excluir_livro' livro.id %}">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum livro cadastrado ainda.</p>
+    {% endif %}
+</main>
+</body>
+</html>
