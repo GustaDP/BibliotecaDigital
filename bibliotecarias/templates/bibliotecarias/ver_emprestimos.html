@@ -19,6 +19,7 @@
         .logout:hover { background-color: #e0e7ff; }
 
         main { padding: 40px; }
+
         table {
             width: 100%; border-collapse: collapse; background-color: white;
             border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -27,13 +28,53 @@
         th, td { padding: 12px 15px; border-bottom: 1px solid #ddd; text-align: left; }
         th { background-color: #2563eb; color: white; }
         tr:hover { background-color: #f1f5f9; }
-        .acoes a { margin-right: 10px; color: #2563eb; font-weight: bold; }
-        .voltar { display:inline-block; margin-bottom:20px; background-color:#2563eb; color:white; padding:8px 15px; border-radius:8px; font-weight:bold; }
+
+        select, input[type="date"] {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        /* Botões estilo Bootstrap */
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: white;
+        }
+        .btn-success {
+            background-color: #16a34a;
+        }
+        .btn-success:hover {
+            background-color: #15803d;
+        }
+        .btn-danger {
+            background-color: #dc2626;
+        }
+        .btn-danger:hover {
+            background-color: #991b1b;
+        }
+
+        .voltar {
+            display:inline-block;
+            margin-bottom:20px;
+            background-color:#2563eb;
+            color:white;
+            padding:8px 15px;
+            border-radius:8px;
+            font-weight:bold;
+        }
         .voltar:hover { background-color:#1e40af; }
-        .status { font-weight:bold; }
-        .status.andamento { color: #2563eb; }
-        .status.devolvido { color: #16a34a; }
-        .status.atrasado { color: #dc2626; }
+
+        .acoes button, .acoes a {
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -62,24 +103,33 @@
                     <th>Data Empréstimo</th>
                     <th>Data Devolução</th>
                     <th>Status</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 {% for emp in emprestimos %}
                 <tr>
-                    <td>{{ emp.aluno.nome }}</td>
-                    <td>{{ emp.livro.titulo }}</td>
-                    <td>{{ emp.data_emprestimo|date:"d/m/Y" }}</td>
-                    <td>{{ emp.data_devolucao|date:"d/m/Y" }}</td>
-                    <td>
-                        {% if emp.status == "Em andamento" %}
-                            <span class="status andamento">⏳ Em andamento</span>
-                        {% elif emp.status == "Devolvido" %}
-                            <span class="status devolvido">✅ Devolvido</span>
-                        {% elif emp.status == "Atrasado" %}
-                            <span class="status atrasado">⚠️ Atrasado</span>
-                        {% endif %}
-                    </td>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="emprestimo_id" value="{{ emp.id }}">
+                        <td>{{ emp.aluno.nome }}</td>
+                        <td>{{ emp.livro.titulo }}</td>
+                        <td>{{ emp.data_emprestimo|date:"d/m/Y" }}</td>
+                        <td>
+                            <input type="date" name="data_devolucao" value="{{ emp.data_devolucao|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <select name="status">
+                                <option value="Em andamento" {% if emp.status == "Em andamento" %}selected{% endif %}>⏳ Em andamento</option>
+                                <option value="Devolvido" {% if emp.status == "Devolvido" %}selected{% endif %}>✅ Devolvido</option>
+                                <option value="Atrasado" {% if emp.status == "Atrasado" %}selected{% endif %}>⚠️ Atrasado</option>
+                            </select>
+                        </td>
+                        <td class="acoes">
+                            <button type="submit" class="btn btn-success">Atualizar</button>
+                            <a href="{% url 'excluir_emprestimo' emp.id %}" class="btn btn-danger">Excluir</a>
+                        </td>
+                    </form>
                 </tr>
                 {% endfor %}
             </tbody>

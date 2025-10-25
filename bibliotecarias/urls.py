@@ -9,4 +9,5 @@ urlpatterns = [
     path('alunos/', views.gerenciar_alunos, name='gerenciar_alunos'),
     path('emprestimos/', views.ver_emprestimos, name='ver_emprestimos'),
     path('livros/gerenciar/', views.gerenciar_livros, name='gerenciar_livros'),
+    path('excluir/<int:id>/', views.excluir_emprestimo, name='excluir_emprestimo')
 ]

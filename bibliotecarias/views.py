@@ -76,8 +76,26 @@ def gerenciar_alunos(request):
     return render(request, 'bibliotecarias/gerenciar_alunos.html', {'alunos': alunos})
 
 def ver_emprestimos(request):
+    if request.method == 'POST' and 'emprestimo_id' in request.POST:
+        emprestimo_id = request.POST.get('emprestimo_id')
+        status = request.POST.get('status')
+        data_devolucao = request.POST.get('data_devolucao')
+
+        emprestimo = get_object_or_404(Emprestimo, id=emprestimo_id)
+        emprestimo.status = status
+        emprestimo.data_devolucao = data_devolucao
+        emprestimo.save()
+        messages.success(request, f'Empréstimo de {emprestimo.livro.titulo} atualizado com sucesso!')
+        return redirect('ver_emprestimos')
+
     emprestimos = Emprestimo.objects.all()
     return render(request, 'bibliotecarias/ver_emprestimos.html', {'emprestimos': emprestimos})
+
+def excluir_emprestimo(request, id):
+    emprestimo = get_object_or_404(Emprestimo, id=id)
+    emprestimo.delete()
+    messages.success(request, 'Empréstimo excluído com sucesso!')
+    return redirect('ver_emprestimos')
 
 def gerenciar_livros(request):
     
