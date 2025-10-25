@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Empréstimos - Bibliotecária</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; }
+        header {
+            background-color: #2563eb; color: white;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px;
+        }
+        h1 { font-size: 22px; margin: 0; }
+        a { text-decoration: none; }
+        .logout {
+            background-color: white; color: #2563eb;
+            padding: 8px 15px; border-radius: 8px; font-weight: bold;
+        }
+        .logout:hover { background-color: #e0e7ff; }
+
+        main { padding: 40px; }
+        table {
+            width: 100%; border-collapse: collapse; background-color: white;
+            border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        th, td { padding: 12px 15px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background-color: #2563eb; color: white; }
+        tr:hover { background-color: #f1f5f9; }
+        .acoes a { margin-right: 10px; color: #2563eb; font-weight: bold; }
+        .voltar { display:inline-block; margin-bottom:20px; background-color:#2563eb; color:white; padding:8px 15px; border-radius:8px; font-weight:bold; }
+        .voltar:hover { background-color:#1e40af; }
+        .status { font-weight:bold; }
+        .status.andamento { color: #2563eb; }
+        .status.devolvido { color: #16a34a; }
+        .status.atrasado { color: #dc2626; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>🔄 Empréstimos</h1>
+    <a class="logout" href="{% url 'logout' %}">Sair</a>
+</header>
+
+<main>
+    <a class="voltar" href="{% url 'home_bibliotecaria' %}">⬅ Voltar à Home</a>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p style="background-color:#d1fae5;color:#065f46;padding:10px;border-radius:8px;font-weight:bold;">
+                {{ message }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    {% if emprestimos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Aluno</th>
+                    <th>Livro</th>
+                    <th>Data Empréstimo</th>
+                    <th>Data Devolução</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in emprestimos %}
+                <tr>
+                    <td>{{ emp.aluno.nome }}</td>
+                    <td>{{ emp.livro.titulo }}</td>
+                    <td>{{ emp.data_emprestimo|date:"d/m/Y" }}</td>
+                    <td>{{ emp.data_devolucao|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if emp.status == "Em andamento" %}
+                            <span class="status andamento">⏳ Em andamento</span>
+                        {% elif emp.status == "Devolvido" %}
+                            <span class="status devolvido">✅ Devolvido</span>
+                        {% elif emp.status == "Atrasado" %}
+                            <span class="status atrasado">⚠️ Atrasado</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum empréstimo registrado.</p>
+    {% endif %}
+</main>
+</body>
+</html>

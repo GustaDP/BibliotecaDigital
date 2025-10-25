@@ -28,7 +28,7 @@ class Usuario(AbstractUser):
     ano_escolar = models.CharField(max_length=30, choices=ANOS, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'nome', 'ra', 'ano_escolar']
+    REQUIRED_FIELDS = [ 'nome', 'ra', 'ano_escolar']
 
     def __str__(self):
         return f"{self.nome} ({self.ano_escolar})"

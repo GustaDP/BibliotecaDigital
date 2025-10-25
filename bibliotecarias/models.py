@@ -22,3 +22,8 @@ class Livro(models.Model):
     def __str__(self):
         return f"{self.titulo} ({self.autor})"
 
+class Aluno(models.Model):
+    nome = models.CharField(max_length=100)
+    matricula = models.CharField(max_length=20)
+    curso = models.CharField(max_length=100)
+    email = models.EmailField()

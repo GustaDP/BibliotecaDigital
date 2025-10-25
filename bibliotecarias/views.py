@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Livro
+from alunos.models import Aluno
+from emprestimos.models import Emprestimo
+from contas.models import Usuario
 
 @login_required
 def home_bibliotecaria(request):
@@ -67,3 +70,20 @@ def excluir_livro(request, id):
     livro.delete()
     messages.success(request, 'Livro excluído com sucesso!')
     return redirect('home_bibliotecaria')
+
+def gerenciar_alunos(request):
+    alunos = Usuario.objects.all()
+    return render(request, 'bibliotecarias/gerenciar_alunos.html', {'alunos': alunos})
+
+def ver_emprestimos(request):
+    emprestimos = Emprestimo.objects.all()
+    return render(request, 'bibliotecarias/ver_emprestimos.html', {'emprestimos': emprestimos})
+
+def gerenciar_livros(request):
+    
+    livros = Livro.objects.all().order_by('titulo') 
+    
+    context = {
+        'livros': livros
+    }
+    return render(request, 'bibliotecarias/gerenciar_livros.html', context)

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Livros - Biblioteca Digital</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; }
+        header {
+            background-color: #2563eb; color: white;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px;
+        }
+        h1 { font-size: 22px; margin: 0; }
+        a { text-decoration: none; }
+
+        .logout {
+            background-color: white; color: #2563eb;
+            padding: 8px 15px; border-radius: 8px; font-weight: bold;
+        }
+        .logout:hover { background-color: #e0e7ff; }
+
+        main {
+            padding: 40px 60px;
+            max-width: 1400px; /* Aumentei a largura máxima para caber mais colunas */
+            margin: 0 auto;
+        }
+        
+        .cabecalho-pagina {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        h2 { color: #1e3a8a; }
+
+        .botao {
+            display: inline-block;
+            background-color: #2563eb; color: white;
+            padding: 10px 20px; border-radius: 8px; font-weight: bold;
+        }
+        .botao:hover { background-color: #1e40af; }
+        
+        .botao-pequeno {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+        }
+        .botao-editar { background-color: #f59e0b; }
+        .botao-editar:hover { background-color: #d97706; }
+        .botao-excluir { background-color: #ef4444; }
+        .botao-excluir:hover { background-color: #dc2626; }
+
+        /* Estilos da Tabela */
+        .tabela-gerenciamento {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden; /* Para o border-radius funcionar nas bordas */
+            font-size: 14px; /* Ajustei o tamanho da fonte */
+        }
+        .tabela-gerenciamento th, .tabela-gerenciamento td {
+            padding: 14px 18px; /* Ajustei o padding */
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+        .tabela-gerenciamento th {
+            background-color: #f9fafb;
+            color: #374151;
+            font-size: 12px; /* Fonte menor para cabçalhos */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tabela-gerenciamento td {
+            color: #555;
+        }
+        .tabela-gerenciamento tr:last-child td {
+            border-bottom: none;
+        }
+        .tabela-gerenciamento .col-acoes {
+            width: 160px; /* Largura fixa para os botões */
+            text-align: right;
+            white-space: nowrap; /* Impede que os botões quebrem a linha */
+        }
+        .col-acoes a {
+            margin-left: 10px;
+        }
+        
+        /* Classes para status Disponível */
+        .status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .status-sim {
+            background-color: #dcfce7; /* Verde claro */
+            color: #166534; /* Verde escuro */
+        }
+        .status-nao {
+            background-color: #fee2e2; /* Vermelho claro */
+            color: #991b1b; /* Vermelho escuro */
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <h1>📚 Biblioteca Digital - Painel da Bibliotecária</h1>
+    <a class="logout" href="{% url 'logout' %}">Sair</a>
+</header>
+
+<main>
+    <div class="cabecalho-pagina">
+        <h2>Gerenciamento de Livros</h2>
+        <a class="botao" href="{% url 'cadastrar_livro' %}">Cadastrar Novo Livro</a>
+    </div>
+
+    <table class="tabela-gerenciamento">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Categoria</th>
+                <th>Ano</th>
+                <th>ISBN</th>
+                <th>Qtd. Total</th>
+                <th>Disponível</th>
+                <th class="col-acoes">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for livro in livros %}
+            <tr>
+                <td>{{ livro.titulo }}</td>
+                <td>{{ livro.autor }}</td>
+                <td>{{ livro.categoria }}</td> <td>{{ livro.ano_publicacao }}</td> <td>{{ livro.isbn }}</td> <td>{{ livro.quantidade }}</td> <td>
+                    {% if livro.disponivel %}
+                        <span class="status status-sim">Sim</span>
+                    {% else %}
+                        <span class="status status-nao">Não</span>
+                    {% endif %}
+                </td>
+                
+                <td class="col-acoes">
+                    <a class="botao botao-pequeno botao-editar" href="{% url 'editar_livro' livro.id %}">Editar</a>
+                    
+                    <a class="botao botao-pequeno botao-excluir" href="{% url 'excluir_livro' livro.id %}">Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" style="text-align: center; padding: 30px;">
+                    Nenhum livro cadastrado ainda.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'home_bibliotecaria' %}" style="display: inline-block; margin-top: 30px; color: #2563eb; font-weight: bold;">
+        &larr; Voltar ao Painel
+    </a>
+
+</main>
+</body>
+</html>

@@ -167,33 +167,36 @@
         {% endif %}
 
         <form method="POST" novalidate>
-            {% csrf_token %}
-            <div class="form-row">
-                <label for="{{ form.nome.id_for_label }}">Nome</label>
-                {{ form.nome }}
-            </div>
-            <div class="form-row">
-                <label for="{{ form.ra.id_for_label }}">RA</label>
-                {{ form.ra }}
-            </div>
-            <div class="form-row">
-                <label for="{{ form.email.id_for_label }}">Email</label>
-                {{ form.email }}
-            </div>
-            <div class="form-row">
-                <label for="{{ form.ano_escolar.id_for_label }}">Ano Escolar</label>
-                {{ form.ano_escolar }}
-            </div>
-            <div class="form-row">
-                <label for="{{ form.password1.id_for_label }}">Senha</label>
-                {{ form.password1 }}
-            </div>
-            <div class="form-row">
-                <label for="{{ form.password2.id_for_label }}">Confirmar Senha</label>
-                {{ form.password2 }}
-            </div>
-            <button type="submit" class="btn">Cadastrar</button>
-        </form>
+    {% csrf_token %}
+    <div class="form-row">
+        <label for="{{ form.nome.id_for_label }}">Nome</label>
+        {{ form.nome }}
+    </div>
+    <div class="form-row">
+        <label for="{{ form.ra.id_for_label }}">RA</label>
+        {{ form.ra }}
+    </div>
+    <div class="form-row">
+        <label for="{{ form.email.id_for_label }}">Email</label>
+        {{ form.email }}
+    </div>
+    <div class="form-row">
+        <label for="{{ form.ano_escolar.id_for_label }}">Ano Escolar</label>
+        {{ form.ano_escolar }}
+    </div>
+    <div class="form-row">
+        <label for="{{ form.password1.id_for_label }}">Senha</label>
+        {{ form.password1 }}
+    </div>
+    <div class="form-row">
+        <label for="{{ form.password2.id_for_label }}">Confirmar Senha</label>
+        {{ form.password2 }}
+    </div>
+    
+    {{ form.errors }}
+
+    <button type="submit" class="btn">Cadastrar</button>
+</form>
 
         <a href="{% url 'login' %}" class="small-link">Já tem uma conta? Faça login</a>
     </main>
