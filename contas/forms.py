@@ -29,7 +29,7 @@ class CadastroForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.username = self.cleaned_data['email']  # usa email como username
+        user.username = self.cleaned_data['email']  # usa email como username (para evitar bug novamente no cadastro)
         if commit:
             user.save()
         return user

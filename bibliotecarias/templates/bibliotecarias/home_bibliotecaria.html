@@ -66,8 +66,8 @@
 </header>
 
 <main>
-    <h2>Bem-vinda ao sistema da biblioteca 👋</h2>
-    <p>Escolha uma das opções abaixo para gerenciar o acervo, os alunos e os empréstimos.</p>
+    <h2>Bem-vindo(a) ao sistema de gerenciamento da biblioteca 🏛️</h2>
+    <p>Tudo o que você precisa para cuidar do acervo e dos leitores.</p>
 
     <div class="opcoes">
         <div class="card">
@@ -83,9 +83,15 @@
         </div>
 
         <div class="card">
-            <h3>🔄 Empréstimos</h3>
+            <h3>📒 Empréstimos</h3>
             <p>Visualize os empréstimos em andamento e devoluções.</p>
             <a class="botao" href="{% url 'ver_emprestimos' %}">Ver Empréstimos</a>
+        </div>
+
+        <div class="card">
+            <h3>📊 Dashboard</h3>
+            <p>Confira as principais informações. </p>
+            <a class="botao" href="{% url 'painel_bibliotecaria' %}">Ver Dashboard</a>
         </div>
     </div>
 </main>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Recomendações de Livros</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f7f8fa;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #3949ab;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .livros-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .livro-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .livro-card:hover {
+            transform: translateY(-4px);
+        }
+        .livro-card h3 {
+            margin: 0;
+            color: #3949ab;
+        }
+        .livro-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+        a.voltar {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            background-color: #3949ab;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+        a.voltar:hover {
+            background-color: #303f9f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Recomendações de Livros</h1>
+        {% if categoria_preferida %}
+            <p>Baseadas em sua categoria favorita: <strong>{{ categoria_preferida }}</strong></p>
+        {% else %}
+            <p>Baseadas nos livros disponíveis</p>
+        {% endif %}
+    </header>
+
+    <div class="container">
+        <div class="livros-grid">
+            {% for livro in livros_recomendados %}
+                <div class="livro-card">
+                    <h3>{{ livro.titulo }}</h3>
+                    <p><strong>Autor:</strong> {{ livro.autor }}</p>
+                    <p><strong>Categoria:</strong> {{ livro.categoria }}</p>
+                    <p><strong>Ano:</strong> {{ livro.ano_publicacao }}</p>
+                </div>
+            {% empty %}
+                <p>Nenhuma recomendação disponível no momento.</p>
+            {% endfor %}
+        </div>
+
+        <a href="{% url 'home_aluno' %}" class="voltar">⬅ Voltar para Home</a>
+    </div>
+</body>
+</html>

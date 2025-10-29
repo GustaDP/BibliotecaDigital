@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'bibliotecarias',
     'alunos',
     'emprestimos',
+    'dashboard',
 ]
 
 MIDDLEWARE = [

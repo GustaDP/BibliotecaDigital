@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Biblioteca Escolar</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f7fb;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: #3949ab;
+            color: white;
+            padding: 15px 40px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 25px 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 15px;
+            color: #555;
+        }
+
+        .card p {
+            font-size: 24px;
+            color: #3949ab;
+            margin-top: 8px;
+        }
+
+        .charts-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 40px 40px 40px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, auto);
+            gap: 20px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        #topLivrosChartCard { grid-column: 1; grid-row: 1; }
+        #generosChartCard   { grid-column: 2; grid-row: 1; }
+        #duracaoChartCard   { grid-column: 1; grid-row: 2; }
+
+        .chart-card canvas {
+            width: 100%;
+            height: 230px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            color: #777;
+            background-color: #e8eaf6;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Dashboard da Biblioteca</h1>
+        <p>Resumo geral do sistema</p>
+    </header>
+
+    <section class="cards-container">
+        <div class="card">
+            <h3>Livros cadastrados</h3>
+            <p>{{ total_livros }}</p>
+        </div>
+        <div class="card">
+            <h3>Empréstimos ativos</h3>
+            <p>{{ emprestimos_ativos }}</p>
+        </div>
+        <div class="card">
+            <h3>Livros atrasados</h3>
+            <p>{{ livros_atrasados }}</p>
+        </div>
+        <div class="card">
+            <h3>Usuários cadastrados</h3>
+            <p>{{ total_usuarios }}</p>
+        </div>
+    </section>
+
+    <section class="charts-container">
+        <div class="chart-card" id="topLivrosChartCard">
+            <canvas id="topLivrosChart"></canvas>
+        </div>
+        <div class="chart-card" id="generosChartCard">
+            <canvas id="generosChart"></canvas>
+        </div>
+        <div class="chart-card" id="duracaoChartCard">
+            <canvas id="duracaoChart"></canvas>
+        </div>
+    </section>
+
+    <footer>
+        Desenvolvido para o Projeto Biblioteca Escolar © {{ ano_atual }}
+    </footer>
+
+    <script>
+        const topLivrosLabels = {{ top_livros_labels|safe }};
+        const topLivrosData = {{ top_livros_data|safe }};
+        const generosLabels = {{ generos_labels|safe }};
+        const generosData = {{ generos_data|safe }};
+        const duracaoMedia = {{ duracao_media|safe }};
+
+        const cores = [
+            '#3f51b5', '#5c6bc0', '#7986cb',
+            '#64b5f6', '#4fc3f7', '#4dd0e1',
+            '#81c784', '#aed581', '#ffb74d', '#e57373'
+        ];
+
+        new Chart(document.getElementById('topLivrosChart'), {
+            type: 'bar',
+            data: {
+                labels: topLivrosLabels,
+                datasets: [{
+                    label: 'Empréstimos',
+                    data: topLivrosData,
+                    borderWidth: 1,
+                    backgroundColor: cores.slice(0, topLivrosData.length)
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    title: { display: true, text: '📘 Top 5 Livros Mais Emprestados' },
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('generosChart'), {
+            type: 'pie',
+            data: {
+                labels: generosLabels,
+                datasets: [{
+                    data: generosData,
+                    backgroundColor: cores.slice(0, generosData.length),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    title: { display: true, text: '📚 Gêneros Mais Populares' },
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('duracaoChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Média de Duração (dias)'],
+                datasets: [{
+                    label: 'Dias',
+                    data: [duracaoMedia],
+                    backgroundColor: '#4db6ac'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    title: { display: true, text: '⏳ Duração Média dos Empréstimos' },
+                    legend: { display: false }
+                },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
+</body>
+</html>
