@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <title>Gerenciar Livros - Biblioteca Digital</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at 20% 50%, #f5f3ff, transparent 70%),
+                        radial-gradient(circle at 80% 50%, #c4b5fd, transparent 70%),
+                        radial-gradient(circle at 50% 20%, #e0e7ff, transparent 70%),
+                        radial-gradient(circle at 50% 80%, #ede9fe, transparent 70%);
+            background-color: #f3e8ff;
+            background-size: 200% 200%;
+            animation: waveMotion 12s ease-in-out infinite;
+        }
+
+        @keyframes waveMotion {
+            0% { background-position: 20% 30%, 80% 70%, 30% 80%, 70% 20%; }
+            50% { background-position: 80% 20%, 30% 80%, 70% 30%, 20% 70%; }
+            100% { background-position: 20% 30%, 80% 70%, 30% 80%, 70% 20%; }
+        }
+
         header {
-            background-color: #2563eb; color: white;
+            background-color: #4338ca; color: white;
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 30px;
         }
@@ -14,18 +31,18 @@
         a { text-decoration: none; }
 
         .logout {
-            background-color: white; color: #2563eb;
+            background-color: white; color: #4338ca;
             padding: 8px 15px; border-radius: 8px; font-weight: bold;
+            transition: all 0.2s ease;
         }
-        .logout:hover { background-color: #e0e7ff; }
+        .logout:hover { 
+            background-color: #e0e7ff;
+            color: #7c3aed;
+        }
 
-        main {
-            padding: 40px 60px;
-            max-width: 1400px; /* Aumentei a largura máxima para caber mais colunas */
-            margin: 0 auto;
-        }
-        
-        .cabecalho-pagina {
+        main { padding: 40px; }
+
+        .acoes-topo {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -36,57 +53,86 @@
 
         .botao {
             display: inline-block;
-            background-color: #2563eb; color: white;
-            padding: 10px 20px; border-radius: 8px; font-weight: bold;
+            background-color: #4338ca;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.2s ease;
         }
-        .botao:hover { background-color: #1e40af; }
-        
-        .botao-pequeno {
-            padding: 6px 12px;
-            font-size: 13px;
+        .botao:hover {
+            background-color: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .voltar {
+            display: inline-block;
+            background-color: #4338ca;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        .voltar:hover {
+            background-color: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        /* Estilo dos botões de ação */
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
             border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: white;
+            margin-right: 5px;
         }
-        .botao-editar { background-color: #f59e0b; }
-        .botao-editar:hover { background-color: #d97706; }
-        .botao-excluir { background-color: #ef4444; }
-        .botao-excluir:hover { background-color: #dc2626; }
+        .btn-editar {
+            background-color: #eab308;
+        }
+        .btn-editar:hover {
+            background-color: #ca8a04;
+        }
+        .btn-excluir {
+            background-color: #ef4444;
+        }
+        .btn-excluir:hover {
+            background-color: #dc2626;
+        }
 
         /* Estilos da Tabela */
-        .tabela-gerenciamento {
+        table {
             width: 100%;
             border-collapse: collapse;
             background-color: white;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-            border-radius: 12px;
-            overflow: hidden; /* Para o border-radius funcionar nas bordas */
-            font-size: 14px; /* Ajustei o tamanho da fonte */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
-        .tabela-gerenciamento th, .tabela-gerenciamento td {
-            padding: 14px 18px; /* Ajustei o padding */
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
             text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-            vertical-align: middle;
         }
-        .tabela-gerenciamento th {
-            background-color: #f9fafb;
-            color: #374151;
-            font-size: 12px; /* Fonte menor para cabçalhos */
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        th {
+            background-color: #4338ca;
+            color: white;
         }
-        .tabela-gerenciamento td {
-            color: #555;
+        tr:hover {
+            background-color: #f1f5f9;
         }
-        .tabela-gerenciamento tr:last-child td {
-            border-bottom: none;
-        }
-        .tabela-gerenciamento .col-acoes {
-            width: 160px; /* Largura fixa para os botões */
+
+        .col-acoes {
+            width: 160px;
             text-align: right;
-            white-space: nowrap; /* Impede que os botões quebrem a linha */
-        }
-        .col-acoes a {
-            margin-left: 10px;
+            white-space: nowrap;
         }
         
         /* Classes para status Disponível */
@@ -109,17 +155,17 @@
 </head>
 <body>
 <header>
-    <h1>📚 Biblioteca Digital - Painel da Bibliotecária</h1>
+    <h1>📋 Gerenciamento de Livros</h1>
     <a class="logout" href="{% url 'logout' %}">Sair</a>
 </header>
 
 <main>
-    <div class="cabecalho-pagina">
-        <h2>Gerenciamento de Livros</h2>
+    <div class="acoes-topo">
+        <a href="{% url 'home_bibliotecaria' %}" class="voltar">⬅ Voltar à Home</a>
         <a class="botao" href="{% url 'cadastrar_livro' %}">Cadastrar Novo Livro</a>
     </div>
 
-    <table class="tabela-gerenciamento">
+    <table>
         <thead>
             <tr>
                 <th>Título</th>
@@ -146,9 +192,8 @@
                 </td>
                 
                 <td class="col-acoes">
-                    <a class="botao botao-pequeno botao-editar" href="{% url 'editar_livro' livro.id %}">Editar</a>
-                    
-                    <a class="botao botao-pequeno botao-excluir" href="{% url 'excluir_livro' livro.id %}">Excluir</a>
+                    <a class="btn btn-editar" href="{% url 'editar_livro' livro.id %}">Editar</a>
+                    <a class="btn btn-excluir" href="{% url 'excluir_livro' livro.id %}">Excluir</a>
                 </td>
             </tr>
             {% empty %}
@@ -160,10 +205,6 @@
             {% endfor %}
         </tbody>
     </table>
-
-    <a href="{% url 'home_bibliotecaria' %}" style="display: inline-block; margin-top: 30px; color: #2563eb; font-weight: bold;">
-        &larr; Voltar ao Painel
-    </a>
 
 </main>
 </body>

@@ -2,51 +2,128 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Meus Empréstimos</title>
-<style>
-    body { font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 20px; }
-    h2 { text-align: center; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
-    th { background-color: #f2f2f2; }
-    a.button { background-color: #f44336; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px; }
-    a.button.disabled { background-color: #999; pointer-events: none; }
-</style>
+</title>
+        <style>
+                body {
+                        font-family: 'Segoe UI', sans-serif;
+                        background-color: #f7f8fa;
+                        margin: 0;
+                        padding: 0;
+                        color: #2d3748;
+                }
+
+                header {
+                        background-color: #3949ab;
+                        color: white;
+                        text-align: center;
+                        padding: 20px 0;
+                }
+
+                .container {
+                        max-width: 1000px;
+                        margin: 32px auto;
+                        padding: 20px;
+                }
+
+                .livros-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                        gap: 20px;
+                        margin-top: 12px;
+                }
+
+                .livro-card, .emprestimo-card {
+                        background: white;
+                        border-radius: 12px;
+                        padding: 18px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        transition: transform 0.18s ease;
+                }
+
+                .livro-card:hover, .emprestimo-card:hover { transform: translateY(-6px); }
+
+                .livro-card h3, .emprestimo-card h3 { margin: 0 0 8px 0; color: #3949ab; }
+                .livro-card p, .emprestimo-card p { margin: 6px 0; color: #546070; font-size: 0.98rem; }
+
+                .actions { margin-top: 12px; display: flex; gap: 8px; }
+
+                .action-button {
+                        background-color: #4338ca;
+                        color: #fff;
+                        padding: 8px 14px;
+                        border-radius: 8px;
+                        text-decoration: none;
+                        font-weight: 600;
+                        font-size: 0.95rem;
+                        transition: background-color 0.2s ease, transform 0.12s ease;
+                }
+
+                .action-button:hover { background-color: #7c3aed; transform: translateY(-2px); }
+
+                .disabled {
+                        background: #e5e7eb;
+                        color: #9aa3ae;
+                        pointer-events: none;
+                }
+
+                .messages { list-style: none; padding: 0; margin: 12px 0 0 0; }
+                .messages li { margin-bottom: 8px; padding: 10px; border-radius: 6px; font-weight: 600; }
+                .messages li.success { background: #ecfdf5; color: #065f46; border: 1px solid #bbf7d0; }
+                .messages li.error { background: #fff1f2; color: #981b1b; border: 1px solid #fecaca; }
+                .voltar {
+                        display: inline-block;
+                        margin-top: 24px;
+                        text-decoration: none;
+                        background-color: #3949ab;
+                        color: white;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        transition: background-color 0.2s ease;
+                }
+                .voltar:hover { background-color: #303f9f; }
+        </style>
 </head>
 <body>
-    {% if messages %}
-    <ul style="list-style: none; padding: 0; margin: 10px 0;">
-        {% for message in messages %}
-            <li style="padding: 10px; margin-bottom: 5px; border-radius: 5px; 
-                       {% if message.tags == 'success' %}background-color: #4CAF50; color: white;{% endif %}
-                       {% if message.tags == 'error' %}background-color: #f44336; color: white;{% endif %}">
-                {{ message }}
-            </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-<h2>Meus Empréstimos</h2>
-<table>
-    <tr>
-        <th>Livro</th>
-        <th>Data de Empréstimo</th>
-        <th>Devolvido?</th>
-        <th>Ações</th>
-    </tr>
-    {% for emp in emprestimos %}
-    <tr>
-        <td>{{ emp.livro.titulo }}</td>
-        <td>{{ emp.data_emprestimo }}</td>
-        <td>{% if emp.devolvido %}Sim{% else %}Não{% endif %}</td>
-        <td>
-            {% if not emp.devolvido %}
-            <a href="{% url 'devolver_livro' emp.id %}" class="button">Devolver</a>
-            {% else %}
-            <a class="button disabled">Devolvido</a>
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+        {% if messages %}
+        <ul class="messages">
+                {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+
+        <header>
+                <h1>📚 Meus Empréstimos</h1>
+        </header>
+
+        <div class="container">
+                <div class="livros-grid">
+                        {% for emp in emprestimos %}
+                                <div class="emprestimo-card">
+                                        <div>
+                                                <h3>{{ emp.livro.titulo }}</h3>
+                                                <p><strong>Data de Empréstimo:</strong> {{ emp.data_emprestimo }}</p>
+                                                <p><strong>Devolvido:</strong> {% if emp.devolvido %}Sim{% else %}Não{% endif %}</p>
+                                                {% if emp.livro.autor %}<p><strong>Autor:</strong> {{ emp.livro.autor }}</p>{% endif %}
+                                        </div>
+                                        <div class="actions">
+                                                {% if not emp.devolvido %}
+                                                        <a href="{% url 'devolver_livro' emp.id %}" class="action-button">Devolver</a>
+                                                {% else %}
+                                                        <span class="action-button disabled">Devolvido</span>
+                                                {% endif %}
+                                        </div>
+                                </div>
+                        {% empty %}
+                                <p>Nenhum empréstimo registrado.</p>
+                        {% endfor %}
+                </div>
+        </div>
+        <div style="text-align:center;">
+                <a href="{% url 'home_aluno' %}" class="voltar">⬅ Voltar para Home</a>
+        </div>
 </body>
 </html>

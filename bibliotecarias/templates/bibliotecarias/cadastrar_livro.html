@@ -4,54 +4,157 @@
     <meta charset="UTF-8">
     <title>Cadastrar Livro</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; }
-        main { padding: 40px; }
-        form {
-            background-color: white; padding: 20px; border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); max-width: 500px; margin: auto;
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at 20% 50%, #f5f3ff, transparent 70%),
+                        radial-gradient(circle at 80% 50%, #c4b5fd, transparent 70%),
+                        radial-gradient(circle at 50% 20%, #e0e7ff, transparent 70%),
+                        radial-gradient(circle at 50% 80%, #ede9fe, transparent 70%);
+            background-color: #f3e8ff;
+            background-size: 200% 200%;
+            animation: waveMotion 12s ease-in-out infinite;
         }
-        label { display: block; margin-top: 15px; font-weight: bold; }
-        input[type=text], input[type=number] {
-            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;
+
+        @keyframes waveMotion {
+            0% { background-position: 20% 30%, 80% 70%, 30% 80%, 70% 20%; }
+            50% { background-position: 80% 20%, 30% 80%, 70% 30%, 20% 70%; }
+            100% { background-position: 20% 30%, 80% 70%, 30% 80%, 70% 20%; }
         }
-        button {
-            background-color: #2563eb; color: white; padding: 10px 15px;
-            border: none; border-radius: 5px; margin-top: 20px;
+
+        header {
+            background-color: #4338ca; color: white;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px;
         }
-        a { text-decoration: none; color: #2563eb; }
+        h1 { font-size: 20px; margin: 0; }
+
+        .logout {
+            background-color: white; color: #4338ca;
+            padding: 8px 15px; border-radius: 8px; font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        .logout:hover {
+            background-color: #e0e7ff; color: #7c3aed;
+        }
+
+        main { padding: 40px; max-width: 900px; margin: 0 auto; }
+
+        .acoes-topo { display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+
+        /* Botões com estilo unificado (voltar e salvar) */
+        .voltar,
+        .botao {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #4338ca;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 1;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+        .voltar:hover, .botao:hover { background-color: #7c3aed; transform: translateY(-2px); }
+
+        .card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .acoes-card {
+            display:flex; justify-content: space-between; align-items: center;
+        }
+
+        label { display:block; margin-top:12px; font-weight:600; color:#334155; }
+        input[type=text], input[type=number], input[type=date], select, textarea {
+            width:100%; padding:10px 12px; border-radius:8px; border:1px solid #e6e9ef;
+            margin-top:6px; box-sizing: border-box; transition: box-shadow .15s, border-color .15s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: #4338ca; box-shadow: 0 0 0 4px rgba(67,56,202,0.06);
+        }
+
+        .form-row { display:flex; gap:12px; }
+        .form-row .col { flex:1; }
+
+        /* (botao styles are unified above) */
+
+        .mensagem-sucesso { background-color:#d1fae5; color:#065f46; padding:10px; border-radius:8px; font-weight:600; }
+
+        .nota { margin-top:12px; color:#475569; font-size:14px; }
     </style>
 </head>
 <body>
+<header>
+    <h1>📋 Cadastrar Livro</h1>
+    <a class="logout" href="{% url 'logout' %}">Sair</a>
+</header>
+
 <main>
-    <h2>Cadastrar Novo Livro</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="titulo">Título:</label>
-        <input type="text" id="titulo" name="titulo" required>
+    <!-- Voltar ficará dentro do card, à esquerda do botão Salvar -->
 
-        <label for="autor">Autor:</label>
-        <input type="text" id="autor" name="autor" required>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="mensagem-sucesso">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card">
+        <h2 style="margin-top:0;">Dados do Livro</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" name="titulo" required>
+
+            <label for="autor">Autor</label>
+            <input type="text" id="autor" name="autor" required>
+
+            <div class="form-row">
+                <div class="col">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" id="isbn" name="isbn" pattern="\\d{13}" maxlength="13" minlength="13" title="O ISBN deve conter exatamente 13 dígitos numéricos">
+                </div>
+                <div class="col">
+                    <label for="quantidade">Quantidade</label>
+                    <input type="number" id="quantidade" name="quantidade" min="1">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col">
+                    <label for="categoria">Categoria</label>
+                    <input type="text" id="categoria" name="categoria">
+                </div>
+                <div class="col">
+                    <label for="ano_publicacao">Ano de Publicação</label>
+                    <input type="number" id="ano_publicacao" name="ano_publicacao">
+                </div>
+            </div>
+
+            <label style="margin-top:16px;">
+                <input type="checkbox" name="disponivel" checked> Disponível
+            </label>
+
+            <br>
+            <div class="acoes-card" style="margin-top:18px;">
+                <a href="{% url 'home_bibliotecaria' %}" class="voltar">⬅ Voltar à Home</a>
+                <button type="submit" class="botao">Salvar</button>
+            </div>
+            <br>
+        </form>
         
-        <label for="isbn">ISBN:</label>
-        <input type="text" id="isbn" name="isbn" pattern="\d{13}" maxlength="13" minlength="13"
-         title="O ISBN deve conter exatamente 13 dígitos numéricos" required>
-
-
-
-        <label for="categoria">Categoria:</label>
-        <input type="text" id="categoria" name="categoria" required>
-
-        <label for="ano_publicacao">Ano de Publicação:</label>
-        <input type="number" id="ano_publicacao" name="ano_publicacao" required>
-
-        <label for="quantidade">Quantidade:</label>
-        <input type="number" id="quantidade" name="quantidade" min="1" required>
-
-        <label><input type="checkbox" name="disponivel" checked> Disponível</label>
-
-        <button type="submit">Salvar</button>
-    </form>
-    <p><a href="{% url 'home_bibliotecaria' %}">← Voltar</a></p>
+    </div>
 </main>
 </body>
 </html>

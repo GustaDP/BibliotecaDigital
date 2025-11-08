@@ -7,88 +7,157 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            color: #2d3748;
+            background: radial-gradient(circle at 20% 50%, #f5f3ff, transparent 70%),
+                        radial-gradient(circle at 80% 50%, #c4b5fd, transparent 70%),
+                        radial-gradient(circle at 50% 20%, #e0e7ff, transparent 70%),
+                        radial-gradient(circle at 50% 80%, #ede9fe, transparent 70%);
+            background-color: #f3e8ff;
+            background-size: 200% 200%;
+            animation: waveMotion 12s ease-in-out infinite;
         }
-        header {
+
+        @keyframes waveMotion {
+            0% { background-position: 20% 30%, 80% 70%, 30% 80%, 70% 20%; }
+            50% { background-position: 80% 20%, 30% 80%, 70% 30%, 20% 70%; }
+            100% { background-position: 20% 30%, 80% 70%, 30% 80%, 70% 20%; }
+        }
+
+        .topbar {
+            width: 100%;
             background-color: #2563eb;
-            color: white;
-            padding: 15px 30px;
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(15,23,42,0.06);
+        }
+
+        .topbar .inner {
+            max-width: 1000px;
+            width: calc(100% - 4rem);
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 14px 0;
         }
+
+        .card {
+            background: rgba(255,255,255,0.98);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 12px 36px rgba(15,23,42,0.09);
+            max-width: 1000px;
+            min-width: 720px;
+            min-height: 520px;
+            width: calc(100% - 4rem);
+            text-align: center;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
         header h1 {
             font-size: 20px;
             margin: 0;
         }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-            font-weight: bold;
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        main {
-            text-align: center;
-            margin-top: 10%;
-        }
-        main h2 {
-            color: #333;
-        }
+
+        nav span { color: #ffffff; }
+
         .logout {
-            background-color: white;
+            background-color: #ffffff;
             color: #2563eb;
-            padding: 8px 15px;
+            padding: 8px 14px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
+            border: none;
         }
+
         .logout:hover {
             background-color: #e0e7ff;
+            color: #1d4ed8;
         }
-        
-        /* --- Estilos Adicionados --- */
-        .button-container {
-            margin-top: 30px; /* Espaço acima dos botões */
-        }
+
+    main { margin-top: 0; }
+    main h2 { color: #111827; margin-bottom: 0.5rem; font-size: 1.6rem; }
+    main p { color: #475569; margin-top: 0; font-size: 1.05rem; }
+
+    .button-container { margin-top: 28px; }
         .action-button {
-            background-color: #2563eb; /* Cor principal */
-            color: white;
-            padding: 12px 25px; /* Tamanho do botão */
+            background-color: #4338ca;
+            color: #fff;
+            padding: 12px 22px;
             border-radius: 8px;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            margin: 0 10px; /* Espaço entre os botões */
+            font-weight: 600;
+            font-size: 15px;
+            margin: 0 8px;
             display: inline-block;
-            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            transition: background-color 0.25s ease, transform 0.12s ease;
         }
-        .action-button:hover {
-            background-color: #1d4ed8; /* Cor mais escura no hover */
-        }
-        /* --- Fim dos Estilos Adicionados --- */
 
+        .action-button:hover {
+            background-color: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 1024px) {
+            .card { padding: 2rem; width: calc(100% - 3rem); max-width: 780px; min-width: 0; }
+            .topbar .inner { max-width: 780px; width: calc(100% - 3rem); }
+        }
+
+        @media (max-width: 640px) {
+            .card { padding: 1.25rem; width: calc(100% - 2rem); max-width: 100%; min-width: 0; min-height: auto; }
+            .action-button { display: block; width: 100%; margin: 8px 0; }
+            header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .topbar .inner { padding: 10px 0; }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>📚 Biblioteca Digital</h1>
-        <nav>
-            <span>Olá, <strong>{{ user.nome }}</strong></span>
-            <a class="logout" href="{% url 'logout' %}">Sair</a>
-        </nav>
+    <header class="topbar">
+        <div class="inner">
+            <h1>📚 Biblioteca Digital</h1>
+            <nav>
+                <span>Olá, <strong>{{ user.nome }}</strong></span>
+                <a class="logout" href="{% url 'logout' %}">Sair</a>
+            </nav>
+        </div>
     </header>
+
+    <div class="card">
     <main>
+        <br>
+        <img src="https://static.vecteezy.com/system/resources/previews/008/515/944/non_2x/students-studying-at-home-vector.jpg" height="300px">
         <h2>Bem-vindo à sua área de aluno!</h2>
+        <br>
         <p>Aqui você poderá consultar livros, verificar empréstimos e muito mais.</p>
+        
 
         <div class="button-container">
     <a href="{% url 'lista_livros' %}" class="action-button">Livros Disponíveis</a>
     <a href="{% url 'meus_emprestimos' %}" class="action-button">Meus Empréstimos</a>
     <a href="{% url 'recomendacoes_aluno' %}" class="action-button">Recomendações de Livros</a>
      </div>
-        </main>
+    </main>
+    </div>
 </body>
 </html>

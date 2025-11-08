@@ -4,19 +4,40 @@
     <meta charset="UTF-8">
     <title>Empréstimos - Bibliotecária</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at 20% 50%, #f5f3ff, transparent 70%),
+                        radial-gradient(circle at 80% 50%, #c4b5fd, transparent 70%),
+                        radial-gradient(circle at 50% 20%, #e0e7ff, transparent 70%),
+                        radial-gradient(circle at 50% 80%, #ede9fe, transparent 70%);
+            background-color: #f3e8ff;
+            background-size: 200% 200%;
+            animation: waveMotion 12s ease-in-out infinite;
+        }
+
+        @keyframes waveMotion {
+            0% { background-position: 20% 30%, 80% 70%, 30% 80%, 70% 20%; }
+            50% { background-position: 80% 20%, 30% 80%, 70% 30%, 20% 70%; }
+            100% { background-position: 20% 30%, 80% 70%, 30% 80%, 70% 20%; }
+        }
+
         header {
-            background-color: #2563eb; color: white;
+            background-color: #4338ca; color: white;
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 30px;
         }
         h1 { font-size: 22px; margin: 0; }
         a { text-decoration: none; }
         .logout {
-            background-color: white; color: #2563eb;
+            background-color: white; color: #4338ca;
             padding: 8px 15px; border-radius: 8px; font-weight: bold;
+            transition: all 0.2s ease;
         }
-        .logout:hover { background-color: #e0e7ff; }
+        .logout:hover { 
+            background-color: #e0e7ff;
+            color: #7c3aed;
+        }
 
         main { padding: 40px; }
 
@@ -26,13 +47,19 @@
             margin-top: 20px;
         }
         th, td { padding: 12px 15px; border-bottom: 1px solid #ddd; text-align: left; }
-        th { background-color: #2563eb; color: white; }
+        th { background-color: #4338ca; color: white; }
         tr:hover { background-color: #f1f5f9; }
 
         select, input[type="date"] {
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+        select:focus, input[type="date"]:focus {
+            border-color: #4338ca;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(67, 56, 202, 0.1);
         }
 
         /* Botões estilo Bootstrap */
@@ -64,13 +91,17 @@
         .voltar {
             display:inline-block;
             margin-bottom:20px;
-            background-color:#2563eb;
+            background-color:#4338ca;
             color:white;
             padding:8px 15px;
             border-radius:8px;
             font-weight:bold;
+            transition: all 0.2s ease;
         }
-        .voltar:hover { background-color:#1e40af; }
+        .voltar:hover { 
+            background-color: #7c3aed;
+            transform: translateY(-2px);
+        }
 
         .acoes button, .acoes a {
             margin-right: 5px;
